@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_URL = "http://localhost:5000/api";
+
 const projectTypes = [
   "Website",
   "Web Application",
@@ -16,13 +18,114 @@ const budgets = [
   "Not sure yet",
 ];
 
+interface FormData {
+  name: string;
+  email: string;
+  projectType: string;
+  budget: string;
+  message: string;
+}
+
+interface FieldErrors {
+  name?: string[];
+  email?: string[];
+  projectType?: string[];
+  budget?: string[];
+  message?: string[];
+}
+
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    projectType: "",
+    budget: "",
+    message: "",
+  });
+
+  function handleChange(
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) {
+    const { name, value } = event.target;
+
+    setFormData((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
+
+    setFieldErrors((previous) => ({
+      ...previous,
+      [name]: undefined,
+    }));
+
+    setServerError("");
+  }
+
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
-    setSubmitted(true);
+    if (isLoading) return;
+
+    setIsLoading(true);
+    setServerError("");
+    setFieldErrors({});
+
+    try {
+      const response = await fetch(`${API_URL}/inquiries`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (data.errors) {
+          setFieldErrors(data.errors);
+        }
+
+        setServerError(
+          data.message || "Please check your form and try again."
+        );
+
+        return;
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Inquiry submission failed:", error);
+
+      setServerError(
+        "Unable to connect to the server. Please try again in a moment."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  function handleNewInquiry() {
+    setSubmitted(false);
+    setServerError("");
+    setFieldErrors({});
+
+    setFormData({
+      name: "",
+      email: "",
+      projectType: "",
+      budget: "",
+      message: "",
+    });
   }
 
   return (
@@ -47,13 +150,13 @@ function Contact() {
             <h2 className="max-w-5xl text-5xl font-medium leading-[0.88] tracking-[-0.06em] md:text-7xl lg:text-8xl">
               HAVE AN IDEA?
               <br />
-              <span className="text-gradient">LET'S BUILD IT.</span>
+              <span className="text-gradient">LET&apos;S BUILD IT.</span>
             </h2>
           </div>
 
           <div className="flex items-end">
             <p className="max-w-md text-base leading-relaxed text-white/50 md:text-lg">
-              Tell us a little about what you're building. We'll
+              Tell us a little about what you&apos;re building. We&apos;ll
               review the details and get back to you.
             </p>
           </div>
@@ -73,13 +176,13 @@ function Contact() {
               </h3>
 
               <p className="mt-5 max-w-md text-sm leading-relaxed text-white/45">
-                Your project details have been recorded. We'll get
-                back to you soon.
+                Your project details have been received. We&apos;ll review
+                your inquiry and get back to you soon.
               </p>
 
               <button
                 type="button"
-                onClick={() => setSubmitted(false)}
+                onClick={handleNewInquiry}
                 className="mt-8 text-xs uppercase tracking-[0.2em] text-white/45 transition-colors hover:text-accent"
               >
                 Send another inquiry
@@ -87,6 +190,16 @@ function Contact() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="max-w-5xl">
+              {/* Server Error */}
+              {serverError && (
+                <div
+                  role="alert"
+                  className="mb-10 rounded-lg border border-red-400/20 bg-red-400/5 px-5 py-4 text-sm text-red-300"
+                >
+                  {serverError}
+                </div>
+              )}
+
               {/* Name + Email */}
               <div className="grid gap-10 md:grid-cols-2">
                 <div>
@@ -102,9 +215,21 @@ function Contact() {
                     name="name"
                     type="text"
                     required
+                    value={formData.name}
+                    onChange={handleChange}
                     placeholder="John Doe"
-                    className="w-full border-b border-white/15 bg-transparent px-0 py-4 text-lg text-white outline-none placeholder:text-white/20 transition-colors focus:border-accent"
+                    className={`w-full border-b bg-transparent px-0 py-4 text-lg text-white outline-none placeholder:text-white/20 transition-colors ${
+                      fieldErrors.name
+                        ? "border-red-400"
+                        : "border-white/15 focus:border-accent"
+                    }`}
                   />
+
+                  {fieldErrors.name && (
+                    <p className="mt-2 text-xs text-red-300">
+                      {fieldErrors.name[0]}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -120,9 +245,21 @@ function Contact() {
                     name="email"
                     type="email"
                     required
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="john@example.com"
-                    className="w-full border-b border-white/15 bg-transparent px-0 py-4 text-lg text-white outline-none placeholder:text-white/20 transition-colors focus:border-accent"
+                    className={`w-full border-b bg-transparent px-0 py-4 text-lg text-white outline-none placeholder:text-white/20 transition-colors ${
+                      fieldErrors.email
+                        ? "border-red-400"
+                        : "border-white/15 focus:border-accent"
+                    }`}
                   />
+
+                  {fieldErrors.email && (
+                    <p className="mt-2 text-xs text-red-300">
+                      {fieldErrors.email[0]}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -139,8 +276,13 @@ function Contact() {
                   id="projectType"
                   name="projectType"
                   required
-                  defaultValue=""
-                  className="w-full appearance-none border-b border-white/15 bg-transparent px-0 py-4 text-lg text-white outline-none transition-colors focus:border-accent"
+                  value={formData.projectType}
+                  onChange={handleChange}
+                  className={`w-full appearance-none border-b bg-transparent px-0 py-4 text-lg text-white outline-none transition-colors ${
+                    fieldErrors.projectType
+                      ? "border-red-400"
+                      : "border-white/15 focus:border-accent"
+                  }`}
                 >
                   <option value="" disabled className="bg-[#080808]">
                     Select project type
@@ -156,6 +298,12 @@ function Contact() {
                     </option>
                   ))}
                 </select>
+
+                {fieldErrors.projectType && (
+                  <p className="mt-2 text-xs text-red-300">
+                    {fieldErrors.projectType[0]}
+                  </p>
+                )}
               </div>
 
               {/* Budget */}
@@ -171,8 +319,13 @@ function Contact() {
                   id="budget"
                   name="budget"
                   required
-                  defaultValue=""
-                  className="w-full appearance-none border-b border-white/15 bg-transparent px-0 py-4 text-lg text-white outline-none transition-colors focus:border-accent"
+                  value={formData.budget}
+                  onChange={handleChange}
+                  className={`w-full appearance-none border-b bg-transparent px-0 py-4 text-lg text-white outline-none transition-colors ${
+                    fieldErrors.budget
+                      ? "border-red-400"
+                      : "border-white/15 focus:border-accent"
+                  }`}
                 >
                   <option value="" disabled className="bg-[#080808]">
                     Select budget range
@@ -188,6 +341,12 @@ function Contact() {
                     </option>
                   ))}
                 </select>
+
+                {fieldErrors.budget && (
+                  <p className="mt-2 text-xs text-red-300">
+                    {fieldErrors.budget[0]}
+                  </p>
+                )}
               </div>
 
               {/* Message */}
@@ -204,9 +363,21 @@ function Contact() {
                   name="message"
                   required
                   rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="What are you trying to build?"
-                  className="w-full resize-none border-b border-white/15 bg-transparent px-0 py-4 text-lg text-white outline-none placeholder:text-white/20 transition-colors focus:border-accent"
+                  className={`w-full resize-none border-b bg-transparent px-0 py-4 text-lg text-white outline-none placeholder:text-white/20 transition-colors ${
+                    fieldErrors.message
+                      ? "border-red-400"
+                      : "border-white/15 focus:border-accent"
+                  }`}
                 />
+
+                {fieldErrors.message && (
+                  <p className="mt-2 text-xs text-red-300">
+                    {fieldErrors.message[0]}
+                  </p>
+                )}
               </div>
 
               {/* Submit */}
@@ -218,12 +389,13 @@ function Contact() {
 
                 <button
                   type="submit"
-                  className="group flex w-fit items-center gap-5 rounded-full bg-accent px-7 py-4 text-sm font-medium uppercase tracking-[0.15em] text-[#080808] transition-all duration-500 hover:shadow-[0_0_40px_-5px_rgba(203,255,77,0.55)]"
+                  disabled={isLoading}
+                  className="group flex w-fit items-center gap-5 rounded-full bg-accent px-7 py-4 text-sm font-medium uppercase tracking-[0.15em] text-[#080808] transition-all duration-500 hover:shadow-[0_0_40px_-5px_rgba(203,255,77,0.55)] disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Send Inquiry
+                  {isLoading ? "Sending..." : "Send Inquiry"}
 
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#080808] text-accent transition-transform duration-500 group-hover:rotate-45">
-                    ↗
+                    {isLoading ? "…" : "↗"}
                   </span>
                 </button>
               </div>
