@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-const API_URL = "http://localhost:5000/api";
+const rawApiUrl =
+  (import.meta.env.VITE_API_URL as string | undefined) ||
+  "http://localhost:5000/api";
+const cleanBaseUrl = rawApiUrl.replace(/\/+$/, "");
+const INQUIRIES_URL = cleanBaseUrl.endsWith("/api")
+  ? `${cleanBaseUrl}/inquiries`
+  : `${cleanBaseUrl}/api/inquiries`;
 
 const projectTypes = [
   "Website",
@@ -80,7 +86,7 @@ function Contact() {
     setFieldErrors({});
 
     try {
-      const response = await fetch(`${API_URL}/inquiries`, {
+      const response = await fetch(INQUIRIES_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +94,12 @@ function Contact() {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      let data: any = {};
+      try {
+        data = await response.json();
+      } catch {
+        // Fallback if response is not JSON
+      }
 
       if (!response.ok) {
         if (data.errors) {
@@ -140,7 +151,7 @@ function Contact() {
 
       <div className="relative mx-auto max-w-[1400px]">
         {/* Heading */}
-        <div className="grid gap-12 md:grid-cols-[1fr_0.8fr]">
+        <div className="section-heading grid gap-12 md:grid-cols-[1fr_0.8fr]">
           <div>
             <p className="mb-6 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-white/35">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />

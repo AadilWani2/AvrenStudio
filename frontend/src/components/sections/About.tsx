@@ -30,7 +30,7 @@ function About() {
     >
       <div className="mx-auto max-w-[1400px]">
         {/* Header */}
-        <div className="grid gap-10 md:grid-cols-[0.7fr_1.3fr]">
+        <div className="section-heading grid gap-10 md:grid-cols-[0.7fr_1.3fr]">
           <div>
             <p className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-black/40">
               <span className="h-1.5 w-1.5 rounded-full bg-coral" />
@@ -79,7 +79,7 @@ function About() {
             {principles.map((principle) => (
               <article
                 key={principle.number}
-                className="card-glow rounded-2xl border border-black/10 bg-white p-8 md:p-10"
+                className="principle-row card-glow rounded-2xl border border-black/10 bg-white p-8 md:p-10"
               >
                 <span
                   className={`flex h-10 w-10 items-center justify-center rounded-full text-xs font-medium tracking-[0.1em] text-[#080808] ${principle.color}`}

@@ -13,9 +13,15 @@ const navigation = [
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (!menuRef.current) return;
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
     if (menuOpen) {
       document.body.style.overflow = "hidden";
@@ -28,21 +34,23 @@ function Navbar() {
 
       const links = menuRef.current.querySelectorAll("nav a");
 
-      gsap.fromTo(
-        links,
-        {
-          y: 50,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.7,
-          stagger: 0.08,
-          delay: 0.2,
-          ease: "power3.out",
-        },
-      );
+      if (links.length > 0) {
+        gsap.fromTo(
+          links,
+          {
+            y: 50,
+            opacity: 0,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            stagger: 0.08,
+            delay: 0.2,
+            ease: "power3.out",
+          },
+        );
+      }
     } else {
       document.body.style.overflow = "";
 

@@ -7,7 +7,6 @@ import NotFound from "../pages/NotFound/NotFound";
 import ScrollToTop from "../components/ui/ScrollToTop";
 
 import { initLenis, destroyLenis } from "../lib/lenis/lenis";
-import { usePageAnimations } from "../hooks/usePageAnimations";
 
 function AppContent() {
   useEffect(() => {
@@ -17,8 +16,6 @@ function AppContent() {
       destroyLenis();
     };
   }, []);
-
-  usePageAnimations();
 
   return (
     <Routes>

@@ -42,7 +42,7 @@ function Process() {
 
       <div className="relative mx-auto max-w-[1400px]">
         {/* Header */}
-        <div className="grid gap-10 md:grid-cols-[1fr_0.8fr]">
+        <div className="section-heading grid gap-10 md:grid-cols-[1fr_0.8fr]">
           <div>
             <p className="mb-6 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-white/35">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
@@ -74,7 +74,7 @@ function Process() {
               {/* Number */}
               <div>
                 <span
-                  className={`flex h-12 w-12 items-center justify-center rounded-full text-xs font-medium tracking-[0.1em] text-[#080808] ${step.color}`}
+                  className={`process-number flex h-12 w-12 items-center justify-center rounded-full text-xs font-medium tracking-[0.1em] text-[#080808] ${step.color}`}
                 >
                   {step.number}
                 </span>
@@ -82,14 +82,14 @@ function Process() {
 
               {/* Title */}
               <div>
-                <h3 className="text-4xl font-medium tracking-[-0.045em] transition-transform duration-500 group-hover:translate-x-2 md:text-6xl">
+                <h3 className="process-title text-4xl font-medium tracking-[-0.045em] transition-transform duration-500 group-hover:translate-x-2 md:text-6xl">
                   {step.title}
                 </h3>
               </div>
 
               {/* Description */}
               <div className="flex items-start justify-between gap-8">
-                <p className="max-w-md text-sm leading-relaxed text-white/45 md:text-base">
+                <p className="process-description max-w-md text-sm leading-relaxed text-white/45 md:text-base">
                   {step.description}
                 </p>
 
