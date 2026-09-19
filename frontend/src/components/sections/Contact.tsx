@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ArrowUpRight } from "../ui/Icons";
 
 const rawApiUrl =
   (import.meta.env.VITE_API_URL as string | undefined) ||
@@ -142,7 +143,7 @@ function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-[#080808] px-6 py-32 text-white md:px-10 md:py-48"
+      className="relative overflow-hidden bg-[#080808] px-5 py-20 text-white sm:px-6 sm:py-28 md:px-10 md:py-48"
     >
       <div
         aria-hidden="true"
@@ -406,7 +407,7 @@ function Contact() {
                   {isLoading ? "Sending..." : "Send Inquiry"}
 
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#080808] text-accent transition-transform duration-500 group-hover:rotate-45">
-                    {isLoading ? "…" : "↗"}
+                    {isLoading ? "…" : <ArrowUpRight size={15} />}
                   </span>
                 </button>
               </div>

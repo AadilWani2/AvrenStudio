@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "../ui/Icons";
+
 const services = [
   {
     number: "01",
@@ -55,18 +57,18 @@ function Services() {
   return (
     <section
       id="services"
-      className="bg-[#f3f3ef] px-6 py-32 text-[#080808] md:px-10 md:py-48"
+      className="bg-[#f3f3ef] px-5 py-20 text-[#080808] sm:px-6 sm:py-28 md:px-10 md:py-48"
     >
       <div className="mx-auto max-w-[1400px]">
         {/* Header */}
-        <div className="section-heading grid gap-10 md:grid-cols-[1fr_0.8fr]">
+        <div className="section-heading grid gap-6 sm:gap-10 md:grid-cols-[1fr_0.8fr]">
           <div>
-            <p className="mb-6 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-black/40">
+            <p className="mb-4 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-black/40 sm:mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-violet" />
               What We Do
             </p>
 
-            <h2 className="max-w-4xl text-5xl font-medium leading-[0.9] tracking-[-0.055em] md:text-7xl lg:text-8xl">
+            <h2 className="max-w-4xl text-4xl font-medium leading-[0.9] tracking-[-0.055em] sm:text-5xl md:text-7xl lg:text-8xl">
               DIGITAL
               <br />
               SOLUTIONS.
@@ -83,14 +85,14 @@ function Services() {
         </div>
 
         {/* Services grid */}
-        <div className="mt-24 grid gap-5 md:mt-36 md:grid-cols-2">
+        <div className="mt-14 grid gap-5 sm:mt-20 md:mt-36 md:grid-cols-2">
           {services.map((service) => {
             const colors = accentClasses[service.accent];
 
             return (
               <article
                 key={service.number}
-                className={`card-glow group relative overflow-hidden rounded-2xl border border-black/10 bg-white p-8 md:p-10 ${colors.border}`}
+                className={`card-glow group relative overflow-hidden rounded-2xl border border-black/10 bg-white p-7 sm:p-8 md:p-10 ${colors.border}`}
               >
                 <div className="flex items-start justify-between">
                   <span
@@ -100,13 +102,13 @@ function Services() {
                   </span>
 
                   <span
-                    className={`text-2xl ${colors.text} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
+                    className={`${colors.text} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
                   >
-                    ↗
+                    <ArrowUpRight size={20} />
                   </span>
                 </div>
 
-                <h3 className="mt-10 text-3xl font-medium tracking-[-0.04em] transition-transform duration-500 group-hover:translate-x-1 md:text-4xl">
+                <h3 className="mt-8 text-2xl font-medium tracking-[-0.04em] transition-transform duration-500 group-hover:translate-x-1 sm:mt-10 sm:text-3xl md:text-4xl">
                   {service.title}
                 </h3>
 

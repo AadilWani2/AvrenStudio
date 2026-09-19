@@ -10,6 +10,12 @@ interface InquiryEmailData {
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
+  pool: true,
+  maxConnections: 3,
+  maxMessages: 100,
+  connectionTimeout: 10000,
+  greetingTimeout: 5000,
+  socketTimeout: 15000,
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_APP_PASSWORD,

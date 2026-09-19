@@ -26,11 +26,11 @@ function About() {
   return (
     <section
       id="about"
-      className="bg-[#f3f3ef] px-6 py-32 text-[#080808] md:px-10 md:py-48"
+      className="bg-[#f3f3ef] px-5 py-20 text-[#080808] sm:px-6 sm:py-28 md:px-10 md:py-48"
     >
       <div className="mx-auto max-w-[1400px]">
         {/* Header */}
-        <div className="section-heading grid gap-10 md:grid-cols-[0.7fr_1.3fr]">
+        <div className="section-heading grid gap-6 sm:gap-10 md:grid-cols-[0.7fr_1.3fr]">
           <div>
             <p className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-black/40">
               <span className="h-1.5 w-1.5 rounded-full bg-coral" />
@@ -39,7 +39,7 @@ function About() {
           </div>
 
           <div>
-            <h2 className="max-w-5xl text-4xl font-medium leading-[0.95] tracking-[-0.045em] md:text-6xl lg:text-7xl">
+            <h2 className="max-w-5xl text-3xl font-medium leading-[0.95] tracking-[-0.045em] sm:text-5xl md:text-6xl lg:text-7xl">
               WE BUILD DIGITAL
               <br />
               PRODUCTS WITH
@@ -50,7 +50,7 @@ function About() {
         </div>
 
         {/* Main statement */}
-        <div className="mt-24 grid gap-16 border-t border-black/15 pt-16 md:mt-36 md:grid-cols-[0.7fr_1.3fr] md:pt-20">
+        <div className="mt-14 grid gap-8 border-t border-black/15 pt-10 sm:mt-20 sm:gap-12 sm:pt-14 md:mt-36 md:grid-cols-[0.7fr_1.3fr] md:gap-16 md:pt-20">
           <div>
             <span className="text-[10px] uppercase tracking-[0.25em] text-black/35">
               Independent Digital Studio
@@ -58,13 +58,13 @@ function About() {
           </div>
 
           <div>
-            <p className="max-w-4xl text-2xl font-medium leading-tight tracking-[-0.025em] md:text-4xl">
+            <p className="max-w-4xl text-xl font-medium leading-tight tracking-[-0.025em] sm:text-2xl md:text-4xl">
               AVRENSTUDIO is an independent digital studio focused on
               creating thoughtful websites, web applications and
               custom digital systems for modern businesses.
             </p>
 
-            <p className="mt-8 max-w-2xl text-base leading-relaxed text-black/55 md:text-lg">
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-black/55 sm:mt-8 md:text-lg">
               We combine design and engineering to turn ideas and
               business requirements into functional digital products.
               Every project starts with understanding the problem
@@ -74,12 +74,12 @@ function About() {
         </div>
 
         {/* Principles */}
-        <div className="mt-24 md:mt-36">
+        <div className="mt-14 sm:mt-20 md:mt-36">
           <div className="grid gap-5 md:grid-cols-3">
             {principles.map((principle) => (
               <article
                 key={principle.number}
-                className="principle-row card-glow rounded-2xl border border-black/10 bg-white p-8 md:p-10"
+                className="principle-row card-glow rounded-2xl border border-black/10 bg-white p-7 sm:p-8 md:p-10"
               >
                 <span
                   className={`flex h-10 w-10 items-center justify-center rounded-full text-xs font-medium tracking-[0.1em] text-[#080808] ${principle.color}`}
@@ -87,11 +87,11 @@ function About() {
                   {principle.number}
                 </span>
 
-                <h3 className="mt-8 text-3xl font-medium tracking-[-0.04em]">
+                <h3 className="mt-6 text-2xl font-medium tracking-[-0.04em] sm:mt-8 sm:text-3xl">
                   {principle.title}
                 </h3>
 
-                <p className="mt-4 max-w-sm text-sm leading-relaxed text-black/50">
+                <p className="mt-3 max-w-sm text-sm leading-relaxed text-black/50 sm:mt-4">
                   {principle.description}
                 </p>
               </article>
@@ -100,13 +100,13 @@ function About() {
         </div>
 
         {/* Closing statement */}
-        <div className="mt-24 md:mt-36">
-          <div className="flex flex-col gap-8 border-t border-black/15 pt-10 md:flex-row md:items-end md:justify-between">
+        <div className="mt-14 sm:mt-20 md:mt-36">
+          <div className="flex flex-col gap-6 border-t border-black/15 pt-8 sm:gap-8 sm:pt-10 md:flex-row md:items-end md:justify-between">
             <p className="text-xs uppercase tracking-[0.25em] text-black/35">
               Design × Engineering
             </p>
 
-            <p className="max-w-xl text-right text-2xl font-medium leading-tight tracking-[-0.03em] md:text-4xl">
+            <p className="max-w-xl text-left text-xl font-medium leading-tight tracking-[-0.03em] sm:text-2xl md:text-right md:text-4xl">
               Small studio.
               <br />
               Serious about the work.

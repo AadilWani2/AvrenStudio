@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Logo from "../ui/Logo";
 import ScrollLink from "../ui/ScrollLink";
+import { ArrowUpRight } from "../ui/Icons";
 
 const navigation = [
   { label: "Work", href: "#work" },
@@ -158,7 +159,7 @@ function Navbar() {
               Start a Project
 
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-[#080808]">
-                ↗
+                <ArrowUpRight size={16} />
               </span>
             </ScrollLink>
           </div>

@@ -11,17 +11,18 @@ export async function createInquiry(data: InquiryInput) {
     message: data.message,
   });
 
-  try {
-    await sendInquiryEmail({
+  // Send email asynchronously in background so the user gets an instant response
+  setImmediate(() => {
+    sendInquiryEmail({
       name: inquiry.name,
       email: inquiry.email,
       projectType: inquiry.projectType,
       budget: inquiry.budget,
       message: inquiry.message,
+    }).catch((error) => {
+      console.error("Inquiry email failed in background:", error);
     });
-  } catch (error) {
-    console.error("Inquiry email failed:", error);
-  }
+  });
 
   return inquiry;
 }

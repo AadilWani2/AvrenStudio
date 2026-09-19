@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "../ui/Icons";
+
 const processSteps = [
   {
     number: "01",
@@ -33,7 +35,7 @@ function Process() {
   return (
     <section
       id="process"
-      className="relative overflow-hidden bg-[#080808] px-6 py-32 text-white md:px-10 md:py-48"
+      className="relative overflow-hidden bg-[#080808] px-5 py-20 text-white sm:px-6 sm:py-28 md:px-10 md:py-48"
     >
       <div
         aria-hidden="true"
@@ -42,14 +44,14 @@ function Process() {
 
       <div className="relative mx-auto max-w-[1400px]">
         {/* Header */}
-        <div className="section-heading grid gap-10 md:grid-cols-[1fr_0.8fr]">
+        <div className="section-heading grid gap-6 sm:gap-10 md:grid-cols-[1fr_0.8fr]">
           <div>
-            <p className="mb-6 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-white/35">
+            <p className="mb-4 flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-white/35 sm:mb-6">
               <span className="h-1.5 w-1.5 rounded-full bg-accent" />
               How We Work
             </p>
 
-            <h2 className="max-w-4xl text-5xl font-medium leading-[0.9] tracking-[-0.055em] md:text-7xl lg:text-8xl">
+            <h2 className="max-w-4xl text-4xl font-medium leading-[0.9] tracking-[-0.055em] sm:text-5xl md:text-7xl lg:text-8xl">
               FROM IDEA
               <br />
               TO LAUNCH.
@@ -65,16 +67,16 @@ function Process() {
         </div>
 
         {/* Process */}
-        <div className="mt-24 border-t border-white/10 md:mt-36">
+        <div className="mt-14 border-t border-white/10 sm:mt-20 md:mt-36">
           {processSteps.map((step) => (
             <article
               key={step.number}
-              className="process-step group grid gap-6 border-b border-white/10 py-10 md:grid-cols-[100px_0.8fr_1fr] md:items-center md:py-14"
+              className="process-step group grid gap-5 border-b border-white/10 py-8 sm:gap-6 md:grid-cols-[100px_0.8fr_1fr] md:items-center md:py-14"
             >
               {/* Number */}
               <div>
                 <span
-                  className={`process-number flex h-12 w-12 items-center justify-center rounded-full text-xs font-medium tracking-[0.1em] text-[#080808] ${step.color}`}
+                  className={`process-number flex h-11 w-11 items-center justify-center rounded-full text-xs font-medium tracking-[0.1em] text-[#080808] sm:h-12 sm:w-12 ${step.color}`}
                 >
                   {step.number}
                 </span>
@@ -82,19 +84,19 @@ function Process() {
 
               {/* Title */}
               <div>
-                <h3 className="process-title text-4xl font-medium tracking-[-0.045em] transition-transform duration-500 group-hover:translate-x-2 md:text-6xl">
+                <h3 className="process-title text-3xl font-medium tracking-[-0.045em] transition-transform duration-500 group-hover:translate-x-2 sm:text-4xl md:text-6xl">
                   {step.title}
                 </h3>
               </div>
 
               {/* Description */}
-              <div className="flex items-start justify-between gap-8">
+              <div className="flex items-start justify-between gap-6 sm:gap-8">
                 <p className="process-description max-w-md text-sm leading-relaxed text-white/45 md:text-base">
                   {step.description}
                 </p>
 
-                <span className="hidden text-xl text-white/15 transition-colors duration-500 group-hover:text-accent md:block">
-                  ↗
+                <span className="hidden text-white/20 transition-colors duration-500 group-hover:text-accent md:block">
+                  <ArrowUpRight size={20} />
                 </span>
               </div>
             </article>
@@ -102,7 +104,7 @@ function Process() {
         </div>
 
         {/* Bottom */}
-        <div className="mt-20 flex flex-col gap-5 md:mt-28 md:flex-row md:items-center md:justify-between">
+        <div className="mt-14 flex flex-col gap-5 sm:mt-20 md:mt-28 md:flex-row md:items-center md:justify-between">
           <p className="text-xs uppercase tracking-[0.25em] text-white/30">
             Clear process. No unnecessary complexity.
           </p>
@@ -114,7 +116,7 @@ function Process() {
             Discuss your project
 
             <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 transition-all duration-500 group-hover:rotate-45 group-hover:border-accent group-hover:bg-accent group-hover:text-black">
-              ↗
+              <ArrowUpRight size={15} />
             </span>
           </a>
         </div>

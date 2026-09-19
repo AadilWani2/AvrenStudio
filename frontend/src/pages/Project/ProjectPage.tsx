@@ -4,6 +4,7 @@ import { projectDetails } from "../../data/projectDetails";
 import Navbar from "../../components/navigation/Navbar";
 import Footer from "../../components/layout/Footer";
 import ProjectGallery from "../../components/sections/ProjectGallery";
+import { ArrowLeft, ArrowUpRight } from "../../components/ui/Icons";
 
 function ProjectPage() {
   const { projectId } = useParams();
@@ -25,9 +26,10 @@ function ProjectPage() {
 
           <Link
             to="/"
-            className="mt-8 inline-block text-sm uppercase tracking-[0.15em] text-white/50 hover:text-white"
+            className="group mt-8 inline-flex items-center gap-2 text-sm uppercase tracking-[0.15em] text-white/50 transition-colors hover:text-white"
           >
-            ← Back Home
+            <ArrowLeft size={14} className="transition-transform duration-300 group-hover:-translate-x-1" />
+            <span>Back Home</span>
           </Link>
         </div>
       </main>
@@ -43,9 +45,10 @@ function ProjectPage() {
         <div className="mx-auto max-w-[1400px]">
           <Link
             to="/"
-            className="text-xs uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-white"
+            className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-white"
           >
-            ← Back to Work
+            <ArrowLeft size={13} className="transition-transform duration-300 group-hover:-translate-x-1" />
+            <span>Back to Work</span>
           </Link>
 
           <div className="mt-20 grid gap-10 md:grid-cols-[1fr_0.7fr] md:items-end">
@@ -165,10 +168,10 @@ function ProjectPage() {
 
           <Link
             to="/"
-            className="group mt-10 inline-flex items-center gap-4 rounded-full bg-accent px-6 py-3 text-sm font-medium uppercase tracking-[0.15em] text-[#080808] transition-all duration-300 hover:shadow-[0_0_40px_-5px_rgba(203,255,77,0.55)]"
+            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-accent px-6 py-3 text-sm font-medium uppercase tracking-[0.15em] text-[#080808] transition-all duration-300 hover:shadow-[0_0_40px_-5px_rgba(203,255,77,0.55)]"
           >
-            View All Work
-            <span>↗</span>
+            <span>View All Work</span>
+            <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>
       </section>

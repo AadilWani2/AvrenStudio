@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "../ui/Icons";
+
 function Hero() {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden px-6 md:px-10">
@@ -75,7 +77,7 @@ function Hero() {
             <span>Start a Project</span>
 
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#080808] text-accent transition-transform duration-500 group-hover:rotate-45">
-              ↗
+              <ArrowUpRight size={15} />
             </span>
           </a>
         </div>
