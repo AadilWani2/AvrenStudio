@@ -19,12 +19,14 @@ export async function submitInquiry(
       return;
     }
 
-    const inquiry = await createInquiry(result.data);
+    const { inquiry, emailSent, emailError } = await createInquiry(result.data);
 
     res.status(201).json({
       success: true,
       message: "Your inquiry has been received.",
       inquiryId: inquiry._id,
+      emailSent,
+      ...(emailError ? { emailWarning: emailError } : {}),
     });
   } catch (error) {
     console.error("Submit inquiry error:", error);
