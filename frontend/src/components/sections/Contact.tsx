@@ -41,11 +41,56 @@ interface FieldErrors {
   message?: string[];
 }
 
+function validateForm(data: FormData): FieldErrors {
+  const errors: FieldErrors = {};
+
+  if (!data.name.trim()) {
+    errors.name = ["Please enter your name."];
+  } else if (data.name.trim().length > 100) {
+    errors.name = ["Name must be under 100 characters."];
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!data.email.trim()) {
+    errors.email = ["Please enter your email address."];
+  } else if (!emailRegex.test(data.email.trim())) {
+    errors.email = ["Please enter a valid email address."];
+  }
+
+  if (!data.projectType) {
+    errors.projectType = ["Please choose a project type."];
+  }
+
+  if (!data.budget) {
+    errors.budget = ["Please select an estimated budget."];
+  }
+
+  if (!data.message.trim()) {
+    errors.message = ["Please describe your project."];
+  } else if (data.message.trim().length < 10) {
+    errors.message = ["Please provide at least 10 characters."];
+  }
+
+  return errors;
+}
+
 function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [slowNotice, setSlowNotice] = useState(false);
   const [serverError, setServerError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+
+  const warmedRef = useState<{ warmed: boolean }>({ warmed: false })[0];
+
+  function warmServer() {
+    if (warmedRef.warmed) return;
+    warmedRef.warmed = true;
+    const healthUrl = cleanBaseUrl.endsWith("/api")
+      ? `${cleanBaseUrl}/health`
+      : `${cleanBaseUrl}/api/health`;
+    fetch(healthUrl, { mode: "cors" }).catch(() => {});
+  }
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -82,9 +127,26 @@ function Contact() {
 
     if (isLoading) return;
 
+    // Instant local client validation (0ms)
+    const validationErrors = validateForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
+      setServerError("Please complete the required fields.");
+      return;
+    }
+
     setIsLoading(true);
+    setSlowNotice(false);
     setServerError("");
     setFieldErrors({});
+
+    // If cold start happens on server, notify user so they know it's connecting
+    const noticeTimer = setTimeout(() => {
+      setSlowNotice(true);
+    }, 2500);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
 
     try {
       const response = await fetch(INQUIRIES_URL, {
@@ -93,6 +155,7 @@ function Contact() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        signal: controller.signal,
       });
 
       let data: any = {};
@@ -115,14 +178,23 @@ function Contact() {
       }
 
       setSubmitted(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Inquiry submission failed:", error);
 
-      setServerError(
-        "Unable to connect to the server. Please try again in a moment."
-      );
+      if (error?.name === "AbortError") {
+        setServerError(
+          "Request timed out. The server took too long to respond. Please try again."
+        );
+      } else {
+        setServerError(
+          "Unable to connect to the server. Please try again in a moment."
+        );
+      }
     } finally {
+      clearTimeout(noticeTimer);
+      clearTimeout(timeoutId);
       setIsLoading(false);
+      setSlowNotice(false);
     }
   }
 
@@ -201,7 +273,12 @@ function Contact() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="max-w-5xl">
+            <form
+              onSubmit={handleSubmit}
+              onFocusCapture={warmServer}
+              onMouseEnter={warmServer}
+              className="max-w-5xl"
+            >
               {/* Server Error */}
               {serverError && (
                 <div
@@ -399,17 +476,29 @@ function Contact() {
                   regarding your project inquiry.
                 </p>
 
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="group flex w-fit items-center gap-5 rounded-full bg-accent px-7 py-4 text-sm font-medium uppercase tracking-[0.15em] text-[#080808] transition-all duration-500 hover:shadow-[0_0_40px_-5px_rgba(203,255,77,0.55)] disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {isLoading ? "Sending..." : "Send Inquiry"}
+                <div className="flex flex-col items-start gap-3 md:items-end">
+                  {slowNotice && (
+                    <p className="animate-pulse text-xs text-accent">
+                      Connecting to server, please hold on...
+                    </p>
+                  )}
 
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#080808] text-accent transition-transform duration-500 group-hover:rotate-45">
-                    {isLoading ? "…" : <ArrowUpRight size={15} />}
-                  </span>
-                </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="group flex w-fit items-center gap-5 rounded-full bg-accent px-7 py-4 text-sm font-medium uppercase tracking-[0.15em] text-[#080808] transition-all duration-500 hover:shadow-[0_0_40px_-5px_rgba(203,255,77,0.55)] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {isLoading
+                      ? slowNotice
+                        ? "Connecting..."
+                        : "Sending..."
+                      : "Send Inquiry"}
+
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#080808] text-accent transition-transform duration-500 group-hover:rotate-45">
+                      {isLoading ? "…" : <ArrowUpRight size={15} />}
+                    </span>
+                  </button>
+                </div>
               </div>
             </form>
           )}

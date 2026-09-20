@@ -9,7 +9,9 @@ interface InquiryEmailData {
 }
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   pool: true,
   maxConnections: 3,
   maxMessages: 100,
@@ -21,6 +23,16 @@ const transporter = nodemailer.createTransport({
     pass: process.env.MAIL_APP_PASSWORD,
   },
 });
+
+export function verifyEmailTransporter(): void {
+  transporter.verify((error) => {
+    if (error) {
+      console.warn("Mail transporter warning:", error.message);
+    } else {
+      console.log("Mail transporter connection verified and warm.");
+    }
+  });
+}
 
 export async function sendInquiryEmail(
   inquiry: InquiryEmailData

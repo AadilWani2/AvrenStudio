@@ -12,6 +12,17 @@ function AppContent() {
   useEffect(() => {
     initLenis();
 
+    // Silently pre-warm the backend so cold-starts happen in the background
+    const rawApiUrl =
+      (import.meta.env.VITE_API_URL as string | undefined) ||
+      "http://localhost:5000/api";
+    const cleanBaseUrl = rawApiUrl.replace(/\/+$/, "");
+    const healthUrl = cleanBaseUrl.endsWith("/api")
+      ? `${cleanBaseUrl}/health`
+      : `${cleanBaseUrl}/api/health`;
+
+    fetch(healthUrl, { mode: "cors" }).catch(() => {});
+
     return () => {
       destroyLenis();
     };
