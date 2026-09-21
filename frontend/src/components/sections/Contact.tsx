@@ -79,6 +79,7 @@ function Contact() {
   const [isLoading, setIsLoading] = useState(false);
   const [slowNotice, setSlowNotice] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [emailWarning, setEmailWarning] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const warmedRef = useState<{ warmed: boolean }>({ warmed: false })[0];
@@ -178,6 +179,14 @@ function Contact() {
       }
 
       setSubmitted(true);
+      if (data.emailSent === false) {
+        setEmailWarning(
+          data.emailWarning ||
+            "Inquiry was stored in MongoDB, but email dispatch failed on Render."
+        );
+      } else {
+        setEmailWarning("");
+      }
     } catch (error: any) {
       console.error("Inquiry submission failed:", error);
 
@@ -201,6 +210,7 @@ function Contact() {
   function handleNewInquiry() {
     setSubmitted(false);
     setServerError("");
+    setEmailWarning("");
     setFieldErrors({});
 
     setFormData({
@@ -260,9 +270,21 @@ function Contact() {
               </h3>
 
               <p className="mt-5 max-w-md text-sm leading-relaxed text-white/45">
-                Your project details have been received. We&apos;ll review
+                Your project details have been received and saved. We&apos;ll review
                 your inquiry and get back to you soon.
               </p>
+
+              {emailWarning && (
+                <div className="mt-6 max-w-lg rounded-xl border border-amber-500/30 bg-amber-500/10 p-5 text-left text-xs">
+                  <p className="font-semibold text-amber-300">⚠️ Admin Notification Status:</p>
+                  <p className="mt-1 text-white/80 leading-relaxed">
+                    The inquiry is saved in your MongoDB database, but email dispatch to Gmail failed because Render Free Tier blocks outbound SMTP port 465.
+                  </p>
+                  <p className="mt-2 text-white/60">
+                    To receive inquiry emails in your inbox, add <code className="rounded bg-black/50 px-1.5 py-0.5 font-mono text-accent">RESEND_API_KEY</code> to your Render Web Service environment variables.
+                  </p>
+                </div>
+              )}
 
               <button
                 type="button"

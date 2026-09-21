@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { inquirySchema } from "../utils/inquiryValidation.js";
 import { createInquiry } from "../services/inquiryService.js";
+import { Inquiry } from "../models/Inquiry.js";
 
 export async function submitInquiry(
   req: Request,
@@ -34,6 +35,29 @@ export async function submitInquiry(
     res.status(500).json({
       success: false,
       message: "Something went wrong. Please try again.",
+    });
+  }
+}
+
+export async function getInquiries(
+  _req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const inquiries = await Inquiry.find().sort({ createdAt: -1 }).limit(50);
+
+    res.status(200).json({
+      success: true,
+      count: inquiries.length,
+      inquiries,
+    });
+  } catch (error: any) {
+    console.error("Get inquiries error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to load inquiries.",
+      error: error.message,
     });
   }
 }

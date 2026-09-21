@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { submitInquiry } from "../controllers/inquiryController.js";
+import { submitInquiry, getInquiries } from "../controllers/inquiryController.js";
 
 const router = Router();
 
 router.post("/", submitInquiry);
+router.get("/", getInquiries);
 
 export default router;
