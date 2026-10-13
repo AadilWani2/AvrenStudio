@@ -1,9 +1,14 @@
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { gsap } from "../lib/gsap/gsap";
 
 export function usePageAnimations() {
-  useLayoutEffect(() => {
-    const context = gsap.context(() => {
+  useEffect(() => {
+    let context: gsap.Context | undefined;
+
+    // Schedule animation setup in requestAnimationFrame to let browser complete initial paint,
+    // avoiding forced synchronous reflow (layout thrashing) on mount.
+    const rafId = requestAnimationFrame(() => {
+      context = gsap.context(() => {
       /*
        * HERO INTRO
        */
@@ -162,7 +167,11 @@ export function usePageAnimations() {
         });
       });
     });
+  });
 
-    return () => context.revert();
-  }, []);
+  return () => {
+    cancelAnimationFrame(rafId);
+    context?.revert();
+  };
+}, []);
 }

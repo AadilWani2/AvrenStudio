@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpRight } from "../ui/Icons";
 
 const rawApiUrl =
@@ -81,11 +81,11 @@ function Contact() {
   const [serverError, setServerError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  const warmedRef = useState<{ warmed: boolean }>({ warmed: false })[0];
+  const warmedRef = useRef(false);
 
   function warmServer() {
-    if (warmedRef.warmed) return;
-    warmedRef.warmed = true;
+    if (warmedRef.current) return;
+    warmedRef.current = true;
     const healthUrl = cleanBaseUrl.endsWith("/api")
       ? `${cleanBaseUrl}/health`
       : `${cleanBaseUrl}/api/health`;
@@ -158,9 +158,14 @@ function Contact() {
         signal: controller.signal,
       });
 
-      let data: any = {};
+      let data: {
+        errors?: FieldErrors;
+        message?: string;
+        emailSent?: boolean;
+        emailWarning?: string;
+      } = {};
       try {
-        data = await response.json();
+        data = (await response.json()) as typeof data;
       } catch {
         // Fallback if response is not JSON
       }
@@ -181,10 +186,11 @@ function Contact() {
       if (data.emailSent === false && data.emailWarning) {
         console.warn("[Admin Note]: Inquiry saved to MongoDB, but email dispatch failed:", data.emailWarning);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Inquiry submission failed:", error);
 
-      if (error?.name === "AbortError") {
+      const isAbortError = error instanceof Error && error.name === "AbortError";
+      if (isAbortError) {
         setServerError(
           "Request timed out. The server took too long to respond. Please try again."
         );
