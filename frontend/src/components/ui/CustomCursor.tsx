@@ -11,6 +11,7 @@ export function CustomCursor() {
   const [mode, setMode] = useState<CursorMode>("default");
   const [label, setLabel] = useState<string>("");
   const [isVisible, setIsVisible] = useState(false);
+  const [isLight, setIsLight] = useState(false);
   const isTouchDevice = useRef(false);
 
   useEffect(() => {
@@ -53,10 +54,28 @@ export function CustomCursor() {
       ringX(e.clientX);
       ringY(e.clientY);
 
-      // Event delegation for context-aware cursor modes
       const target = e.target as HTMLElement | null;
       if (!target) return;
 
+      // Adaptive theme detection: check whether the target is in a light/white background
+      const lightCarrier = target.closest<HTMLElement>(
+        '[data-theme="light"], .theme-light, [class*="bg-[#f3f3ef]"], [class*="bg-[#f3f2ec]"], [class*="bg-paper"], .bg-white'
+      );
+      const darkCarrier = target.closest<HTMLElement>(
+        '[data-theme="dark"], [class*="bg-[#080808]"], [class*="bg-[#0d0d0d]"], [class*="bg-[#111]"], .project-card, nav'
+      );
+
+      let currentIsLight = false;
+      if (lightCarrier && darkCarrier) {
+        // Closer carrier takes precedence
+        currentIsLight = lightCarrier.contains(darkCarrier) ? false : true;
+      } else if (lightCarrier) {
+        currentIsLight = true;
+      }
+
+      setIsLight((prev) => (prev !== currentIsLight ? currentIsLight : prev));
+
+      // Event delegation for context-aware cursor modes
       const cursorTarget = target.closest<HTMLElement>(
         "[data-cursor], a, button, input, textarea, select, .project-card, [role='button']"
       );
@@ -162,41 +181,74 @@ export function CustomCursor() {
     };
   }, []);
 
-  // Animate ring and dot variations based on current mode
+  // Animate ring and dot variations based on current mode and light/dark theme
   useEffect(() => {
     const ring = ringRef.current;
     const dot = dotRef.current;
     const labelEl = labelRef.current;
     if (!ring || !dot || !isVisible) return;
 
-    switch (mode) {
-      case "view":
+    if (mode === "view") {
+      const bgColor = isLight ? "#080808" : "#cbff4d";
+      const textColor = isLight ? "#ffffff" : "#080808";
+      const shadowColor = isLight
+        ? "0 0 35px 5px rgba(0, 0, 0, 0.35)"
+        : "0 0 35px 5px rgba(203, 255, 77, 0.45)";
+
+      gsap.to(ring, {
+        width: 72,
+        height: 72,
+        backgroundColor: bgColor,
+        borderColor: "transparent",
+        boxShadow: shadowColor,
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      gsap.to(dot, {
+        opacity: 0,
+        scale: 0,
+        duration: 0.2,
+      });
+      if (labelEl) {
+        labelEl.style.color = textColor;
+        gsap.to(labelEl, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.25,
+          delay: 0.05,
+          ease: "back.out(1.5)",
+        });
+      }
+      return;
+    }
+
+    if (mode === "hidden") {
+      gsap.to([ring, dot], {
+        opacity: 0,
+        duration: 0.2,
+      });
+      return;
+    }
+
+    if (mode === "link") {
+      if (isLight) {
         gsap.to(ring, {
-          width: 72,
-          height: 72,
-          backgroundColor: "#cbff4d",
-          borderColor: "transparent",
-          boxShadow: "0 0 35px 5px rgba(203, 255, 77, 0.45)",
-          duration: 0.35,
+          width: 50,
+          height: 50,
+          backgroundColor: "rgba(0, 0, 0, 0.1)",
+          borderColor: "rgba(0, 0, 0, 0.8)",
+          boxShadow: "0 0 25px rgba(0, 0, 0, 0.15)",
+          duration: 0.3,
           ease: "power3.out",
         });
         gsap.to(dot, {
-          opacity: 0,
-          scale: 0,
-          duration: 0.2,
+          opacity: 1,
+          scale: 1.5,
+          backgroundColor: "#080808",
+          boxShadow: "0 0 8px rgba(0, 0, 0, 0.3)",
+          duration: 0.25,
         });
-        if (labelEl) {
-          gsap.to(labelEl, {
-            opacity: 1,
-            scale: 1,
-            duration: 0.25,
-            delay: 0.05,
-            ease: "back.out(1.5)",
-          });
-        }
-        break;
-
-      case "link":
+      } else {
         gsap.to(ring, {
           width: 48,
           height: 48,
@@ -210,14 +262,34 @@ export function CustomCursor() {
           opacity: 1,
           scale: 1.5,
           backgroundColor: "#cbff4d",
+          boxShadow: "0 0 10px rgba(203, 255, 77, 0.8)",
           duration: 0.25,
         });
-        if (labelEl) {
-          gsap.to(labelEl, { opacity: 0, scale: 0.5, duration: 0.15 });
-        }
-        break;
+      }
+      if (labelEl) {
+        gsap.to(labelEl, { opacity: 0, scale: 0.5, duration: 0.15 });
+      }
+      return;
+    }
 
-      case "input":
+    if (mode === "input") {
+      if (isLight) {
+        gsap.to(ring, {
+          width: 24,
+          height: 24,
+          backgroundColor: "transparent",
+          borderColor: "rgba(0, 0, 0, 0.4)",
+          boxShadow: "none",
+          duration: 0.25,
+        });
+        gsap.to(dot, {
+          opacity: 0.8,
+          scale: 0.6,
+          backgroundColor: "#080808",
+          boxShadow: "none",
+          duration: 0.2,
+        });
+      } else {
         gsap.to(ring, {
           width: 24,
           height: 24,
@@ -230,43 +302,56 @@ export function CustomCursor() {
           opacity: 0.8,
           scale: 0.6,
           backgroundColor: "#ffffff",
+          boxShadow: "none",
           duration: 0.2,
         });
-        if (labelEl) {
-          gsap.to(labelEl, { opacity: 0, scale: 0.5, duration: 0.15 });
-        }
-        break;
-
-      case "hidden":
-        gsap.to([ring, dot], {
-          opacity: 0,
-          duration: 0.2,
-        });
-        break;
-
-      case "default":
-      default:
-        gsap.to(ring, {
-          width: 36,
-          height: 36,
-          backgroundColor: "rgba(203, 255, 77, 0.04)",
-          borderColor: "rgba(203, 255, 77, 0.35)",
-          boxShadow: "0 0 15px rgba(203, 255, 77, 0.08)",
-          duration: 0.35,
-          ease: "power3.out",
-        });
-        gsap.to(dot, {
-          opacity: 1,
-          scale: 1,
-          backgroundColor: "#cbff4d",
-          duration: 0.25,
-        });
-        if (labelEl) {
-          gsap.to(labelEl, { opacity: 0, scale: 0.5, duration: 0.15 });
-        }
-        break;
+      }
+      if (labelEl) {
+        gsap.to(labelEl, { opacity: 0, scale: 0.5, duration: 0.15 });
+      }
+      return;
     }
-  }, [mode, isVisible]);
+
+    // Default mode
+    if (isLight) {
+      gsap.to(ring, {
+        width: 36,
+        height: 36,
+        backgroundColor: "rgba(0, 0, 0, 0.04)",
+        borderColor: "rgba(0, 0, 0, 0.35)",
+        boxShadow: "0 0 15px rgba(0, 0, 0, 0.04)",
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      gsap.to(dot, {
+        opacity: 1,
+        scale: 1,
+        backgroundColor: "#080808",
+        boxShadow: "0 0 8px rgba(0, 0, 0, 0.25)",
+        duration: 0.25,
+      });
+    } else {
+      gsap.to(ring, {
+        width: 36,
+        height: 36,
+        backgroundColor: "rgba(203, 255, 77, 0.04)",
+        borderColor: "rgba(203, 255, 77, 0.35)",
+        boxShadow: "0 0 15px rgba(203, 255, 77, 0.08)",
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      gsap.to(dot, {
+        opacity: 1,
+        scale: 1,
+        backgroundColor: "#cbff4d",
+        boxShadow: "0 0 10px rgba(203, 255, 77, 0.8)",
+        duration: 0.25,
+      });
+    }
+    if (labelEl) {
+      gsap.to(labelEl, { opacity: 0, scale: 0.5, duration: 0.15 });
+    }
+  }, [mode, isVisible, isLight]);
 
   return (
     <>
@@ -274,7 +359,7 @@ export function CustomCursor() {
       <div
         ref={dotRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_rgba(203,255,77,0.8)] md:block"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] hidden h-2 w-2 rounded-full md:block"
         style={{ transform: "translate3d(-50%, -50%, 0)" }}
       />
 
@@ -282,12 +367,12 @@ export function CustomCursor() {
       <div
         ref={ringRef}
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9998] hidden h-9 w-9 items-center justify-center rounded-full border border-accent/40 bg-accent/[0.04] backdrop-blur-[0.5px] transition-colors md:flex"
+        className="pointer-events-none fixed left-0 top-0 z-[9998] hidden h-9 w-9 items-center justify-center rounded-full border backdrop-blur-[0.5px] transition-colors md:flex"
         style={{ transform: "translate3d(-50%, -50%, 0)" }}
       >
         <span
           ref={labelRef}
-          className="select-none text-[9px] font-bold tracking-[0.2em] text-[#080808] opacity-0"
+          className="select-none text-[9px] font-bold tracking-[0.2em] opacity-0"
         >
           {label}
         </span>

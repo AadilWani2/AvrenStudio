@@ -55,7 +55,12 @@ function SelectedWork() {
 
                 {/* Visual */}
                 <div className="mx-auto w-full max-w-[1180px]">
-                  <div className="card-glow relative overflow-hidden rounded-xl border border-white/10 bg-[#111] shadow-2xl">
+                  <Link
+                    to={`/work/${project.id}`}
+                    data-cursor="view"
+                    aria-label={`View ${project.title} project`}
+                    className="card-glow relative block overflow-hidden rounded-xl border border-white/10 bg-[#111] shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                  >
                     {/* Browser chrome */}
                     <div className="flex items-center gap-2 border-b border-white/10 bg-[#0d0d0d] px-3.5 py-2.5 sm:px-4 sm:py-3">
                       <span className="h-2.5 w-2.5 rounded-full bg-coral/70" />
@@ -92,7 +97,7 @@ function SelectedWork() {
                       {/* Hover overlay */}
                       <div className="absolute inset-0 bg-accent opacity-0 transition-opacity duration-700 group-hover:opacity-[0.04]" />
                     </div>
-                  </div>
+                  </Link>
                 </div>
 
                 {/* Project Information */}
@@ -100,7 +105,12 @@ function SelectedWork() {
                   {/* Title */}
                   <div>
                     <h3 className="text-2xl font-medium tracking-[-0.045em] sm:text-3xl md:text-5xl">
-                      {project.title}
+                      <Link
+                        to={`/work/${project.id}`}
+                        className="transition-colors hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+                      >
+                        {project.title}
+                      </Link>
                     </h3>
 
                     <p className="mt-2 text-xs uppercase tracking-[0.2em] text-white/35 sm:mt-3">

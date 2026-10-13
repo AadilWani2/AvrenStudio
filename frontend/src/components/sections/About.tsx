@@ -26,6 +26,7 @@ function About() {
   return (
     <section
       id="about"
+      data-theme="light"
       className="bg-[#f3f3ef] px-5 py-20 text-[#080808] sm:px-6 sm:py-28 md:px-10 md:py-48"
     >
       <div className="mx-auto max-w-[1400px]">
