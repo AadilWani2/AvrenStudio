@@ -5,6 +5,7 @@ import Home from "../pages/Home/Home";
 import ProjectPage from "../pages/Project/ProjectPage";
 import NotFound from "../pages/NotFound/NotFound";
 import ScrollToTop from "../components/ui/ScrollToTop";
+import CustomCursor from "../components/ui/CustomCursor";
 
 import { initLenis, destroyLenis } from "../lib/lenis/lenis";
 
@@ -41,6 +42,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <CustomCursor />
       <AppContent />
     </BrowserRouter>
   );

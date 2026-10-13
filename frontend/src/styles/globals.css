@@ -158,3 +158,12 @@ input,
 textarea {
   border-radius: 0;
 }
+
+@media (hover: hover) and (pointer: fine) {
+  body,
+  a,
+  button,
+  [role="button"] {
+    cursor: none;
+  }
+}
