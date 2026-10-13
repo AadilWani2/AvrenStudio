@@ -32,3 +32,7 @@ export function destroyLenis() {
   lenis.destroy();
   lenis = null;
 }
+
+export function getLenis() {
+  return lenis;
+}

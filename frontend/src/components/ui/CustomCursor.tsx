@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { getLenis } from "../../lib/lenis/lenis";
 
 type CursorMode = "default" | "link" | "view" | "input" | "hidden";
 
@@ -39,24 +40,9 @@ export function CustomCursor() {
     gsap.set([dot, ring], { xPercent: -50, yPercent: -50, opacity: 0 });
 
     let hasEntered = false;
+    const mousePos = { x: -100, y: -100 };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isTouchDevice.current) return;
-
-      if (!hasEntered) {
-        hasEntered = true;
-        setIsVisible(true);
-        gsap.to([dot, ring], { opacity: 1, duration: 0.3, ease: "power2.out" });
-      }
-
-      dotX(e.clientX);
-      dotY(e.clientY);
-      ringX(e.clientX);
-      ringY(e.clientY);
-
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
-
+    const checkTarget = (target: HTMLElement) => {
       // Adaptive theme detection: check whether the target is in a light/white background
       const lightCarrier = target.closest<HTMLElement>(
         '[data-theme="light"], .theme-light, [class*="bg-[#f3f3ef]"], [class*="bg-[#f3f2ec]"], [class*="bg-paper"], .bg-white'
@@ -123,6 +109,77 @@ export function CustomCursor() {
       setLabel("");
     };
 
+    const updateTargetUnderPointer = () => {
+      if (!hasEntered || isTouchDevice.current) return;
+      if (mousePos.x < 0 || mousePos.y < 0) return;
+
+      const element = document.elementFromPoint(mousePos.x, mousePos.y) as HTMLElement | null;
+      if (element) {
+        checkTarget(element);
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isTouchDevice.current) return;
+
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
+
+      if (!hasEntered) {
+        hasEntered = true;
+        setIsVisible(true);
+        gsap.to([dot, ring], { opacity: 1, duration: 0.3, ease: "power2.out" });
+      }
+
+      dotX(e.clientX);
+      dotY(e.clientY);
+      ringX(e.clientX);
+      ringY(e.clientY);
+
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        checkTarget(target);
+      }
+    };
+
+    // Keep checking theme seamlessly while scrolling (e.g. from dark into white section)
+    let isScrolling = false;
+    let scrollStopTimer: number | undefined;
+
+    const onScrollTick = () => {
+      updateTargetUnderPointer();
+    };
+
+    const handleScroll = () => {
+      updateTargetUnderPointer();
+      if (!isScrolling) {
+        isScrolling = true;
+        gsap.ticker.add(onScrollTick);
+      }
+      if (scrollStopTimer !== undefined) {
+        window.clearTimeout(scrollStopTimer);
+      }
+      scrollStopTimer = window.setTimeout(() => {
+        isScrolling = false;
+        gsap.ticker.remove(onScrollTick);
+        updateTargetUnderPointer();
+      }, 150);
+    };
+
+    // Subscribe to Lenis smooth scroll updates if available
+    let cleanupLenis: (() => void) | undefined;
+    const attachLenis = () => {
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.on("scroll", handleScroll);
+        cleanupLenis = () => lenis.off("scroll", handleScroll);
+      }
+    };
+
+    attachLenis();
+    // In case Lenis initialized slightly after this effect
+    const lenisPollTimer = window.setTimeout(attachLenis, 300);
+
     const handleMouseDown = () => {
       if (isTouchDevice.current) return;
       gsap.to(ring, {
@@ -154,6 +211,8 @@ export function CustomCursor() {
     const handleMouseLeave = () => {
       hasEntered = false;
       setIsVisible(false);
+      mousePos.x = -100;
+      mousePos.y = -100;
       gsap.to([dot, ring], { opacity: 0, duration: 0.25, ease: "power2.out" });
     };
 
@@ -167,6 +226,7 @@ export function CustomCursor() {
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("mouseleave", handleMouseLeave);
@@ -174,10 +234,17 @@ export function CustomCursor() {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
       document.removeEventListener("mouseleave", handleMouseLeave);
       window.removeEventListener("touchstart", handleTouchStart);
+      window.clearTimeout(lenisPollTimer);
+      if (scrollStopTimer !== undefined) {
+        window.clearTimeout(scrollStopTimer);
+      }
+      gsap.ticker.remove(onScrollTick);
+      cleanupLenis?.();
     };
   }, []);
 
