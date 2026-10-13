@@ -1,5 +1,6 @@
 import type { MouseEvent, ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getLenis } from "../../lib/lenis/lenis";
 
 type ScrollLinkProps = {
   href: string;
@@ -24,35 +25,31 @@ function ScrollLink({
 
     onClick?.();
 
-    // Already on homepage
-    if (location.pathname === "/") {
-      window.history.pushState({}, "", href);
-
+    const scrollToTarget = () => {
       const target = document.querySelector(href);
+      if (!target) return;
 
-      if (target) {
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.scrollTo(target as HTMLElement, { offset: 0, duration: 1.2 });
+      } else {
         target.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
       }
+    };
 
+    // Already on homepage
+    if (location.pathname === "/") {
+      window.history.pushState({}, "", href);
+      scrollToTarget();
       return;
     }
 
     // Coming from another route
     navigate(`/${href}`);
-
-    setTimeout(() => {
-      const target = document.querySelector(href);
-
-      if (target) {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, 500);
+    setTimeout(scrollToTarget, 500);
   }
 
   return (

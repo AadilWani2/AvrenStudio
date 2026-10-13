@@ -1,3 +1,4 @@
+import ScrollLink from "../ui/ScrollLink";
 import { ArrowUpRight } from "../ui/Icons";
 
 function Hero() {
@@ -31,8 +32,8 @@ function Hero() {
       />
 
       {/* Main content */}
-      <div className="relative mx-auto w-full max-w-[1400px] pt-24">
-        <div className="hero-eyebrow mb-8 flex items-center gap-3 overflow-hidden">
+      <div className="relative mx-auto w-full max-w-[1400px] pt-16 pb-12 md:pt-20 md:pb-16">
+        <div className="hero-eyebrow mb-6 flex items-center gap-3 overflow-hidden md:mb-8">
           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent shadow-[0_0_12px_2px_rgba(203,255,77,0.6)]" />
           <span className="block text-xs font-medium uppercase tracking-[0.3em] text-white/45">
             Independent Digital Studio
@@ -40,7 +41,7 @@ function Hero() {
         </div>
 
         <div className="overflow-hidden">
-          <h1 className="text-[clamp(3.5rem,9vw,9rem)] font-medium leading-[0.85] tracking-[-0.065em]">
+          <h1 className="text-[clamp(2.75rem,7.5vw,7.5rem)] font-medium leading-[0.88] tracking-[-0.065em]">
             <span className="hero-line block">WE BUILD</span>
 
             <span className="hero-line text-gradient block">
@@ -51,14 +52,14 @@ function Hero() {
           </h1>
         </div>
 
-        <div className="mt-12 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+        <div className="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between">
           <div className="hero-description max-w-md">
             <p className="text-base leading-relaxed text-white/55 md:text-lg">
               Websites, web applications and digital products designed
               and engineered for modern businesses.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-2 md:mt-6">
               {["React", "Node.js", "Design Systems"].map((tag) => (
                 <span
                   key={tag}
@@ -84,22 +85,29 @@ function Hero() {
       </div>
 
       {/* Bottom project indicator */}
-      <div className="pointer-events-none absolute bottom-8 left-6 md:left-10">
+      <div className="pointer-events-none absolute bottom-5 left-6 z-20 md:bottom-7 md:left-10">
         <span className="text-[10px] uppercase tracking-[0.25em] text-white/25">
           N / 01
         </span>
       </div>
 
       {/* Scroll indicator */}
-      <div className="pointer-events-none absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3">
-        <span className="text-[10px] uppercase tracking-[0.28em] text-white/35">
-          Scroll to explore
+      <ScrollLink
+        href="#work"
+        aria-label="Scroll down to selected work"
+        className="hero-scroll group absolute bottom-5 inset-x-0 mx-auto z-20 flex w-fit flex-col items-center gap-2.5 transition-opacity duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent md:bottom-7"
+      >
+        <span className="animate-scroll-nudge flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/70 transition-colors duration-300 group-hover:text-accent">
+          <span>Scroll down</span>
+          <span className="inline-block text-accent transition-transform duration-300 group-hover:translate-y-1">
+            ↓
+          </span>
         </span>
 
-        <span className="relative h-8 w-px overflow-hidden bg-white/10">
-          <span className="absolute left-0 top-0 h-1/2 w-full animate-pulse bg-accent" />
+        <span className="relative h-9 w-[2px] overflow-hidden rounded-full bg-white/20 transition-colors duration-300 group-hover:bg-white/35">
+          <span className="animate-scroll-line absolute inset-x-0 top-0 h-1/2 w-full rounded-full bg-accent shadow-[0_0_12px_2px_rgba(203,255,77,0.9)]" />
         </span>
-      </div>
+      </ScrollLink>
     </section>
   );
 }

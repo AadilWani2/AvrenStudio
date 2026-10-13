@@ -77,6 +77,7 @@ export function usePageAnimations() {
             "-=0.4",
           );
         }
+
       }
 
       /*
