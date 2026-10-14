@@ -27,9 +27,9 @@ function About() {
     <section
       id="about"
       data-theme="light"
-      className="bg-[#f3f3ef] px-5 py-20 text-[#080808] sm:px-6 sm:py-28 md:px-10 md:py-48"
+      className="bg-[#f3f3ef] px-6 py-20 text-[#080808] sm:py-28 md:px-10 md:py-48 lg:px-16 2xl:px-24"
     >
-      <div className="mx-auto max-w-[1400px]">
+      <div className="w-full">
         {/* Header */}
         <div className="section-heading grid gap-6 sm:gap-10 md:grid-cols-[0.7fr_1.3fr]">
           <div>

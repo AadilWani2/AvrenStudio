@@ -224,14 +224,14 @@ function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-[#080808] px-5 py-20 text-white sm:px-6 sm:py-28 md:px-10 md:py-48"
+      className="relative overflow-hidden bg-[#080808] px-6 py-20 text-white sm:py-28 md:px-10 md:py-48 lg:px-16 2xl:px-24"
     >
       <div
         aria-hidden="true"
         className="mesh-glow absolute left-[10%] top-[10%] h-[450px] w-[450px] bg-accent/10"
       />
 
-      <div className="relative mx-auto max-w-[1400px]">
+      <div className="relative w-full">
         {/* Heading */}
         <div className="section-heading grid gap-12 md:grid-cols-[1fr_0.8fr]">
           <div>
@@ -287,7 +287,7 @@ function Contact() {
               onSubmit={handleSubmit}
               onFocusCapture={warmServer}
               onMouseEnter={warmServer}
-              className="max-w-5xl"
+              className="w-full"
             >
               {/* Server Error */}
               {serverError && (
@@ -362,90 +362,91 @@ function Contact() {
                 </div>
               </div>
 
-              {/* Project type */}
-              <div className="mt-14">
-                <label
-                  htmlFor="projectType"
-                  className="mb-4 block text-xs uppercase tracking-[0.2em] text-white/35"
-                >
-                  What are you building?
-                </label>
+              {/* Project type + Budget */}
+              <div className="mt-14 grid gap-10 md:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="projectType"
+                    className="mb-4 block text-xs uppercase tracking-[0.2em] text-white/35"
+                  >
+                    What are you building?
+                  </label>
 
-                <select
-                  id="projectType"
-                  name="projectType"
-                  required
-                  value={formData.projectType}
-                  onChange={handleChange}
-                  className={`w-full appearance-none border-b bg-transparent px-0 py-4 text-lg text-white outline-none transition-colors ${
-                    fieldErrors.projectType
-                      ? "border-red-400"
-                      : "border-white/15 focus:border-accent"
-                  }`}
-                >
-                  <option value="" disabled className="bg-[#080808]">
-                    Select project type
-                  </option>
-
-                  {projectTypes.map((type) => (
-                    <option
-                      key={type}
-                      value={type}
-                      className="bg-[#080808]"
-                    >
-                      {type}
+                  <select
+                    id="projectType"
+                    name="projectType"
+                    required
+                    value={formData.projectType}
+                    onChange={handleChange}
+                    className={`w-full appearance-none border-b bg-transparent px-0 py-4 text-lg text-white outline-none transition-colors ${
+                      fieldErrors.projectType
+                        ? "border-red-400"
+                        : "border-white/15 focus:border-accent"
+                    }`}
+                  >
+                    <option value="" disabled className="bg-[#080808]">
+                      Select project type
                     </option>
-                  ))}
-                </select>
 
-                {fieldErrors.projectType && (
-                  <p className="mt-2 text-xs text-red-300">
-                    {fieldErrors.projectType[0]}
-                  </p>
-                )}
-              </div>
+                    {projectTypes.map((type) => (
+                      <option
+                        key={type}
+                        value={type}
+                        className="bg-[#080808]"
+                      >
+                        {type}
+                      </option>
+                    ))}
+                  </select>
 
-              {/* Budget */}
-              <div className="mt-14">
-                <label
-                  htmlFor="budget"
-                  className="mb-4 block text-xs uppercase tracking-[0.2em] text-white/35"
-                >
-                  Estimated Budget
-                </label>
+                  {fieldErrors.projectType && (
+                    <p className="mt-2 text-xs text-red-300">
+                      {fieldErrors.projectType[0]}
+                    </p>
+                  )}
+                </div>
 
-                <select
-                  id="budget"
-                  name="budget"
-                  required
-                  value={formData.budget}
-                  onChange={handleChange}
-                  className={`w-full appearance-none border-b bg-transparent px-0 py-4 text-lg text-white outline-none transition-colors ${
-                    fieldErrors.budget
-                      ? "border-red-400"
-                      : "border-white/15 focus:border-accent"
-                  }`}
-                >
-                  <option value="" disabled className="bg-[#080808]">
-                    Select budget range
-                  </option>
+                <div>
+                  <label
+                    htmlFor="budget"
+                    className="mb-4 block text-xs uppercase tracking-[0.2em] text-white/35"
+                  >
+                    Estimated Budget
+                  </label>
 
-                  {budgets.map((budget) => (
-                    <option
-                      key={budget}
-                      value={budget}
-                      className="bg-[#080808]"
-                    >
-                      {budget}
+                  <select
+                    id="budget"
+                    name="budget"
+                    required
+                    value={formData.budget}
+                    onChange={handleChange}
+                    className={`w-full appearance-none border-b bg-transparent px-0 py-4 text-lg text-white outline-none transition-colors ${
+                      fieldErrors.budget
+                        ? "border-red-400"
+                        : "border-white/15 focus:border-accent"
+                    }`}
+                  >
+                    <option value="" disabled className="bg-[#080808]">
+                      Select budget range
                     </option>
-                  ))}
-                </select>
 
-                {fieldErrors.budget && (
-                  <p className="mt-2 text-xs text-red-300">
-                    {fieldErrors.budget[0]}
-                  </p>
-                )}
+                    {budgets.map((budget) => (
+                      <option
+                        key={budget}
+                        value={budget}
+                        className="bg-[#080808]"
+                      >
+                        {budget}
+                      </option>
+                    ))}
+                  </select>
+
+                  {fieldErrors.budget && (
+                    <p className="mt-2 text-xs text-red-300">
+                      {fieldErrors.budget[0]}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Message */}

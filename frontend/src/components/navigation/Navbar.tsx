@@ -73,8 +73,8 @@ function Navbar() {
 
   return (
     <>
-      <header className="fixed left-0 top-0 z-[100] w-full">
-        <nav className="nav-content mx-auto flex max-w-[1400px] items-center justify-between border-b border-white/[0.06] bg-[#080808]/70 px-6 py-5 backdrop-blur-xl md:px-10">
+      <header className="fixed left-0 top-0 z-[100] w-full border-b border-white/[0.06] bg-[#080808]/70 backdrop-blur-xl">
+        <nav className="nav-content flex w-full items-center justify-between px-6 py-5 md:px-10 lg:px-16 2xl:px-24">
           <Logo />
 
           {/* Desktop navigation */}

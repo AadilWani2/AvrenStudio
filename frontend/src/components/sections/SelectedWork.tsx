@@ -8,9 +8,9 @@ function SelectedWork() {
   return (
     <section
       id="work"
-      className="relative bg-[#080808] px-5 py-20 text-white sm:px-6 sm:py-28 md:px-10 md:py-40"
+      className="relative bg-[#080808] px-6 py-20 text-white sm:py-28 md:px-10 md:py-40 lg:px-16 2xl:px-24"
     >
-      <div className="mx-auto max-w-[1400px]">
+      <div className="w-full">
         {/* Header */}
         <div className="section-heading mb-12 grid gap-6 sm:mb-16 sm:gap-8 md:mb-24 md:grid-cols-[1fr_0.8fr]">
           <div>
@@ -54,7 +54,7 @@ function SelectedWork() {
                 </div>
 
                 {/* Visual */}
-                <div className="mx-auto w-full max-w-[1180px]">
+                <div className="w-full">
                   <Link
                     to={`/work/${project.id}`}
                     data-cursor="view"

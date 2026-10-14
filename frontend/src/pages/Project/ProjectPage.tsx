@@ -41,8 +41,8 @@ function ProjectPage() {
       <Navbar />
 
       {/* Header */}
-      <section className="px-6 pb-24 pt-32 md:px-10 md:pb-36 md:pt-40">
-        <div className="mx-auto max-w-[1400px]">
+      <section className="px-6 pb-24 pt-32 md:px-10 md:pb-36 md:pt-40 lg:px-16 2xl:px-24">
+        <div className="w-full">
           <Link
             to="/"
             className="group inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-white"
@@ -86,8 +86,8 @@ function ProjectPage() {
       </section>
 
       {/* Overview */}
-      <section data-theme="light" className="bg-[#f3f3ef] px-6 py-24 text-[#080808] md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1400px]">
+      <section data-theme="light" className="bg-[#f3f3ef] px-6 py-24 text-[#080808] md:px-10 md:py-36 lg:px-16 2xl:px-24">
+        <div className="w-full">
           <div className="grid gap-12 md:grid-cols-[0.7fr_1.3fr]">
             <p className="text-xs uppercase tracking-[0.3em] text-black/35">
               Overview
@@ -101,8 +101,8 @@ function ProjectPage() {
       </section>
 
       {/* Challenge / Solution */}
-      <section className="bg-[#080808] px-6 py-24 md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1400px]">
+      <section className="bg-[#080808] px-6 py-24 md:px-10 md:py-36 lg:px-16 2xl:px-24">
+        <div className="w-full">
           <div className="grid gap-16 md:grid-cols-2">
             <div>
               <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/30">
@@ -128,8 +128,8 @@ function ProjectPage() {
       </section>
 
       {/* Features */}
-      <section data-theme="light" className="bg-[#f3f3ef] px-6 py-24 text-[#080808] md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1400px]">
+      <section data-theme="light" className="bg-[#f3f3ef] px-6 py-24 text-[#080808] md:px-10 md:py-36 lg:px-16 2xl:px-24">
+        <div className="w-full">
           <div className="mb-14">
             <p className="text-xs uppercase tracking-[0.3em] text-black/35">
               Key Features
@@ -156,8 +156,8 @@ function ProjectPage() {
       </section>
 
       {/* Bottom */}
-      <section className="bg-[#080808] px-6 py-24 md:px-10 md:py-36">
-        <div className="mx-auto max-w-[1400px] text-center">
+      <section className="bg-[#080808] px-6 py-24 md:px-10 md:py-36 lg:px-16 2xl:px-24">
+        <div className="w-full text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-white/30">
             More Work
           </p>

@@ -3,7 +3,7 @@ import { ArrowUpRight } from "../ui/Icons";
 
 function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden px-6 md:px-10">
+    <section className="relative flex min-h-screen items-center overflow-hidden px-6 md:px-10 lg:px-16 2xl:px-24">
       {/* Background grid */}
       <div
         aria-hidden="true"
@@ -32,7 +32,7 @@ function Hero() {
       />
 
       {/* Main content */}
-      <div className="relative mx-auto w-full max-w-[1400px] pt-16 pb-12 md:pt-20 md:pb-16">
+      <div className="relative w-full pt-16 pb-12 md:pt-20 md:pb-16">
         <div className="hero-eyebrow mb-6 flex items-center gap-3 overflow-hidden md:mb-8">
           <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent shadow-[0_0_12px_2px_rgba(203,255,77,0.6)]" />
           <span className="block text-xs font-medium uppercase tracking-[0.3em] text-white/45">
@@ -53,7 +53,7 @@ function Hero() {
         </div>
 
         <div className="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between">
-          <div className="hero-description max-w-md">
+          <div className="hero-description max-w-xl">
             <p className="text-base leading-relaxed text-white/55 md:text-lg">
               Websites, web applications and digital products designed
               and engineered for modern businesses.
@@ -85,7 +85,7 @@ function Hero() {
       </div>
 
       {/* Bottom project indicator */}
-      <div className="pointer-events-none absolute bottom-5 left-6 z-20 md:bottom-7 md:left-10">
+      <div className="pointer-events-none absolute bottom-5 left-6 z-20 md:bottom-7 md:left-10 lg:left-16 2xl:left-24">
         <span className="text-[10px] uppercase tracking-[0.25em] text-white/25">
           N / 01
         </span>

@@ -11,13 +11,13 @@ const footerLinks = [
 
 function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-[#080808] px-6 pb-8 pt-20 text-white md:px-10 md:pt-28">
+    <footer className="relative overflow-hidden bg-[#080808] px-6 pb-8 pt-20 text-white md:px-10 md:pt-28 lg:px-16 2xl:px-24">
       <div
         aria-hidden="true"
         className="mesh-glow absolute bottom-[-20%] right-[10%] h-[350px] w-[350px] bg-violet/10"
       />
 
-      <div className="relative mx-auto max-w-[1400px]">
+      <div className="relative w-full">
         {/* Top */}
         <div className="grid gap-16 md:grid-cols-[1fr_auto]">
           <div>

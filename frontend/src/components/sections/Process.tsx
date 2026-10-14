@@ -35,14 +35,14 @@ function Process() {
   return (
     <section
       id="process"
-      className="relative overflow-hidden bg-[#080808] px-5 py-20 text-white sm:px-6 sm:py-28 md:px-10 md:py-48"
+      className="relative overflow-hidden bg-[#080808] px-6 py-20 text-white sm:py-28 md:px-10 md:py-48 lg:px-16 2xl:px-24"
     >
       <div
         aria-hidden="true"
         className="mesh-glow absolute right-[5%] top-[10%] h-[400px] w-[400px] bg-violet/10"
       />
 
-      <div className="relative mx-auto max-w-[1400px]">
+      <div className="relative w-full">
         {/* Header */}
         <div className="section-heading grid gap-6 sm:gap-10 md:grid-cols-[1fr_0.8fr]">
           <div>
@@ -91,7 +91,7 @@ function Process() {
 
               {/* Description */}
               <div className="flex items-start justify-between gap-6 sm:gap-8">
-                <p className="process-description max-w-md text-sm leading-relaxed text-white/45 md:text-base">
+                <p className="process-description max-w-xl text-sm leading-relaxed text-white/45 md:text-base">
                   {step.description}
                 </p>
 
