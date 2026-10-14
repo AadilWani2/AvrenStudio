@@ -521,10 +521,10 @@ function Contact() {
           </p>
 
           <a
-            href="mailto:hello@avrenstudio.dev"
+            href="mailto:waniaadil211@gmail.com"
             className="mt-4 block text-xl text-white/70 transition-colors hover:text-accent md:mt-0 md:text-2xl"
           >
-            hello@avrenstudio.dev
+            waniaadil211@gmail.com
           </a>
         </div>
       </div>
